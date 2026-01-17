@@ -1,1 +1,1 @@
-# Yale-UNC-CH---Geophysical-Waveform-Inversion
+# Yale-UNC-CH-Geophysical-Waveform-Inversion
