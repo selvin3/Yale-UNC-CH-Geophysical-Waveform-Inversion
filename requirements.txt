@@ -1,0 +1,2 @@
+torch
+numpy==2.4.1
