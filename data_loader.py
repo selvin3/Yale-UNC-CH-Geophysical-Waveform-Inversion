@@ -63,7 +63,7 @@ class LoadWaveData(Dataset):
                 model_files = sorted(
                     os.path.join(family_path, f)
                     for f in os.listdir(family_path)
-                    if f.startswith("model")
+                    if f.startswith("vel")
                 )
 
                 inputs.extend(seis_files)
