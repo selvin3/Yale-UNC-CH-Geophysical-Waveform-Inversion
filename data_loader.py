@@ -20,7 +20,7 @@ class LoadWaveData(Dataset):
         """Return total number of training samples."""
         return len(self.inputs) * self.samples_per_file
 
-    def __getitem__(self, index: int):
+    def __getitem__(self, index: int) -> tuple[torch.tensor, torch.tensor]:
         """Return one training sample."""
         file_index = index // self.samples_per_file
         local_index = index % self.samples_per_file
