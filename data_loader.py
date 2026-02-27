@@ -3,6 +3,7 @@
 import os
 
 import numpy as np
+import torch
 from torch.utils.data import Dataset
 
 
@@ -23,11 +24,17 @@ class LoadWaveData(Dataset):
         """Return one training sample."""
         file_index = index // self.samples_per_file
         local_index = index % self.samples_per_file
-        all_data = np.load(self.inputs[file_index], mmap_mode="r")
-        data = all_data[local_index]
+        data = np.load(self.inputs[file_index], mmap_mode="r")[
+            local_index
+        ]  # (source, timestamp, recievers)
+        data = np.moveaxis(data, -1, 0)  # (recievers, source, timestamp)
         data = (data - data.mean()) / (data.std() + 1e-8)
-        all_target = np.load(self.targets[file_index], mmap_mode="r")
-        return data, all_target[local_index]
+
+        target = np.load(self.targets[file_index], mmap_mode="r")[local_index]
+
+        return torch.tensor(data, dtype=torch.float32), torch.tensor(
+            target, dtype=torch.float32
+        )
 
     def _load_all_file_pairs(self) -> tuple[list, list]:
         inputs = []
