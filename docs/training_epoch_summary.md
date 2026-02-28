@@ -17,3 +17,5 @@ Epoch [13/100] Train Loss: 499.612812 Val Loss: 498.083740
 Epoch [14/100] Train Loss: 503.373396 Val Loss: 553.131734
 Early stopping triggered at epoch 14. Best Val Loss: 498.083740
 ```
+
+<img width="585" height="456" alt="Screenshot from 2026-02-28 11-05-12" src="https://github.com/user-attachments/assets/2eda9531-b671-4233-a01a-929de9d1d74d" />
