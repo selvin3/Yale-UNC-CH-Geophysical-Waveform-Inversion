@@ -13,7 +13,7 @@ from model import SeismicUNet
 
 _DATA_PATH = flags.DEFINE_string("data_path", None, "Training dataset path.")
 _BATCH_SIZE = flags.DEFINE_integer("batch_size", 32, "Batch size value.")
-_EPOCH = flags.DEFINE_integer("epoch", 10, "Number of epochs.")
+_EPOCH = flags.DEFINE_integer("epoch", 100, "Number of epochs.")
 _LERANING_RATE = flags.DEFINE_float(
     "learning_rate", 0.001, "Initial learning rate value."
 )
@@ -41,9 +41,15 @@ def train(data_path: str, batch_size: int, epoch: int, learning_rate: float):
     model.to(device)
     criterion = torch.nn.SmoothL1Loss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    # early stopping params
+    patience = 5
+    min_delta = 1e-4
+    epochs_no_improve = 0
 
     # start training
     best_val_loss = float("inf")
+    train_loss_history = []
+    val_loss_history = []
     for epoch_num in range(epoch):
         model.train()
         epoch_loss = []
@@ -60,6 +66,7 @@ def train(data_path: str, batch_size: int, epoch: int, learning_rate: float):
             epoch_loss.append(current_loss.item())
 
         train_loss = sum(epoch_loss) / len(epoch_loss)
+        train_loss_history.append(train_loss)
 
         # validation
         model.eval()
@@ -73,15 +80,27 @@ def train(data_path: str, batch_size: int, epoch: int, learning_rate: float):
                 val_losses.append(loss_value.item())
 
         val_loss = sum(val_losses) / len(val_losses)
-        if val_loss < best_val_loss:
+        val_loss_history.append(val_loss)
+        if val_loss < (best_val_loss - min_delta):
             best_val_loss = val_loss
             torch.save(model.state_dict(), "best_model.pth")
+        else:
+            epochs_no_improve += 1
 
         logging.info(
             f"Epoch [{epoch_num + 1}/{epoch}] "
             f"Train Loss: {train_loss:.6f} "
             f"Val Loss: {val_loss:.6f}"
         )
+
+        if epochs_no_improve >= patience:
+            logging.info(
+                f"Early stopping triggered at epoch {epoch_num + 1}. "
+                f"Best Val Loss: {best_val_loss:.6f}"
+            )
+            break
+
+        # Use val_loss_history and train_loss_history for plotting
 
 
 def main(argv: Sequence[str]):
