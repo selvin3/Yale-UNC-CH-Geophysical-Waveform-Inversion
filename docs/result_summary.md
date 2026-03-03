@@ -1,4 +1,6 @@
-## Training Logs (SmoothL1, SeismicUNet)
+# Loss: SmoothL1, Model: SeismicUNet
+
+## Training Logs
 
 ```
 Epoch [1/100] Train Loss: 2895.607089 Val Loss: 2930.630127
@@ -19,3 +21,8 @@ Early stopping triggered at epoch 14. Best Val Loss: 498.083740
 ```
 
 <img width="585" height="456" alt="Screenshot from 2026-02-28 11-05-12" src="https://github.com/user-attachments/assets/2eda9531-b671-4233-a01a-929de9d1d74d" />
+
+
+## Test Data Score
+
+```Private Score : 568.04063```
