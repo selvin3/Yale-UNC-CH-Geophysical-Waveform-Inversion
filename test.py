@@ -36,6 +36,7 @@ def test(data_path: str, model_path: str, batch_size: int = 256):
             oid = file_name.replace(".npy", "").strip()
             data = np.load(os.path.join(data_path, file_name))
             data = np.moveaxis(data, -1, 0)  # (C, H, W)
+            data = (data - data.mean()) / (data.std() + 1e-8)
             batch_data.append(data)
             batch_oids.append(oid)
 
