@@ -25,4 +25,4 @@ Early stopping triggered at epoch 14. Best Val Loss: 498.083740
 
 ## Test Data Score
 
-```Private Score : 568.04063```
+```Private Score : 499.25832```
